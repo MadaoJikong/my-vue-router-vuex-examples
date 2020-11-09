@@ -1,11 +1,42 @@
 import Vue from 'vue'; // 从node_modules引入vue类库
+import VueRouter from "vue-router";
+import Vuex from 'vuex';
 import App from './app'; // ES6 语法，相当于 import { default as App } from './app.vue'。因为app.vue用过的是export default {...}，所以可以这样写
+import Blog from './blog/blog';
+import Calendar from './calendar/calendar';
 import './assets//css/index.css';
-new Vue({
-    el: '#app',
-    components: {
-        App
+
+Vue.use(VueRouter);
+Vue.use(Vuex);
+
+const router = new VueRouter({
+    routes: [
+        { path: '/blog/:id', component: Blog },
+        { path: '/calendar', component: Calendar },
+    ]
+});
+
+const store = new Vuex.Store({
+    state: {
+        count: 0
     },
+    getters: {
+        countPlusCount: function (state) {
+            return state.count++;
+        }
+    },
+    mutations: {
+        increment(state) {
+            state.count++
+        }
+    }
+});
+
+
+var vm = new Vue({
+    el: '#app',
+    router: router,
+    store: store,
     /**
      * Vue2.x 区分了完整版和运行时版，然后当使用 webpack 的时候默认是只包含运行时的 ES Module 版本。
      * 运行时版不包括编译器【用来将模板字符串编译成为 JavaScript 渲染函数的代码】，所以不能用 template，要用 render 函数。
