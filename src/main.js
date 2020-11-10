@@ -29,7 +29,9 @@ const store = new Vuex.Store({
         increment(state) {
             state.count++
         }
-    }
+    },
+    actions: {},
+    
 });
 
 
